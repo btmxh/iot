@@ -1,0 +1,550 @@
+/* ============================================
+   MODERN IOT DASHBOARD THEME - CYAN EDITION
+   ============================================ */
+
+/* Google Fonts - Poppins for modern look */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Cyan/Teal Color Palette */
+    --primary: #06b6d4;
+    --primary-dark: #0891b2;
+    --primary-light: #22d3ee;
+    --secondary: #0ea5e9;
+    --accent: #14b8a6;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    
+    /* Gradient - Cyan Theme */
+    --gradient-primary: linear-gradient(135deg, #06b6d4 0%, #0ea5e9 100%);
+    --gradient-sidebar: linear-gradient(180deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+    --gradient-header: linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%);
+    --gradient-card: linear-gradient(135deg, #ffffff 0%, #f0fdfa 100%);
+    
+    /* Background */
+    --bg-main: #ecfeff;
+    --bg-card: #ffffff;
+    --bg-dark: #083344;
+    
+    /* Text */
+    --text-primary: #164e63;
+    --text-secondary: #0e7490;
+    --text-light: #67e8f9;
+    --text-white: #ffffff;
+    
+    /* Border & Shadow */
+    --border-color: #a5f3fc;
+    --shadow-sm: 0 1px 2px 0 rgb(6 182 212 / 0.1);
+    --shadow-md: 0 4px 6px -1px rgb(6 182 212 / 0.15), 0 2px 4px -2px rgb(6 182 212 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(6 182 212 / 0.2), 0 4px 6px -4px rgb(6 182 212 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(6 182 212 / 0.2), 0 8px 10px -6px rgb(6 182 212 / 0.1);
+    --shadow-glow: 0 0 20px rgb(6 182 212 / 0.4);
+    
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+    
+    /* Transition */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--bg-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ============================================
+   LAYOUT
+   ============================================ */
+
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--border-color);
+    padding: 0 24px 0 0;
+    box-shadow: var(--shadow-md);
+}
+
+.header__left {
+    width: 280px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-sidebar);
+    border: none;
+    gap: 12px;
+}
+
+.header__sibar {
+    display: none;
+}
+
+.header__left::before {
+    content: "🌐 IoT Hub";
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-white);
+    letter-spacing: -0.5px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.header__right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+}
+
+.page__header--title.heading {
+    font-size: 24px;
+    font-weight: 600;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-md);
+}
+
+.user:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-glow);
+}
+
+.user__name {
+    font-weight: 600;
+    color: var(--text-white);
+    font-size: 14px;
+}
+
+.user__avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    background-image: url(../assets/icon/avatar-default.png);
+    background-size: cover;
+    background-position: center;
+    border: 3px solid rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================
+   MAIN LAYOUT
+   ============================================ */
+
+.main {
+    display: flex;
+    margin-top: 72px;
+    min-height: calc(100vh - 72px);
+}
+
+/* ============================================
+   SIDEBAR MENU
+   ============================================ */
+
+.menu {
+    width: 280px;
+    min-height: calc(100vh - 72px);
+    background: var(--gradient-sidebar);
+    padding: 28px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: fixed;
+    left: 0;
+    top: 72px;
+    bottom: 0;
+    border: none;
+}
+
+.menu .item {
+    display: flex;
+    align-items: center;
+    padding: 16px 22px;
+    border-radius: var(--radius-md);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    background: transparent;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.menu .item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: var(--primary-light);
+    border-radius: 0 5px 5px 0;
+    transform: scaleY(0);
+    transition: var(--transition);
+}
+
+.menu .item:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-white);
+    transform: translateX(6px);
+}
+
+.menu .item--selected {
+    background: rgba(6, 182, 212, 0.25) !important;
+    color: var(--text-white) !important;
+    font-weight: 600;
+    box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.menu .item--selected::before {
+    transform: scaleY(1);
+}
+
+/* Menu Icons - Updated */
+.menu .icon__dashboard {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2367e8f9' stroke-width='2'%3E%3Crect x='3' y='3' width='7' height='7' rx='1'/%3E%3Crect x='14' y='3' width='7' height='7' rx='1'/%3E%3Crect x='3' y='14' width='7' height='7' rx='1'/%3E%3Crect x='14' y='14' width='7' height='7' rx='1'/%3E%3C/svg%3E");
+    background-size: 24px;
+    background-position: 18px center;
+    background-repeat: no-repeat;
+    padding-left: 58px;
+}
+
+.menu .icon__temperature {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23fbbf24' stroke-width='2'%3E%3Cpath d='M12 9V3m0 0L9 6m3-3l3 3'/%3E%3Cpath d='M12 15v6m0 0l3-3m-3 3l-3-3'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+    background-size: 24px;
+    background-position: 18px center;
+    background-repeat: no-repeat;
+    padding-left: 58px;
+}
+
+.menu .icon__humidity {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2322d3ee' stroke-width='2'%3E%3Cpath d='M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z'/%3E%3C/svg%3E");
+    background-size: 24px;
+    background-position: 18px center;
+    background-repeat: no-repeat;
+    padding-left: 58px;
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+
+.content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 28px 36px;
+    background: var(--bg-main);
+    min-height: calc(100vh - 72px);
+}
+
+.page__header {
+    margin-bottom: 28px;
+}
+
+.page__toolbar--left select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 12px 50px 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Poppins', Arial, sans-serif;
+    color: #164e63;
+    background-color: #ffffff;
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    width: auto;
+    min-width: 200px;
+    height: 48px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%230891b2' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.page__toolbar--left select option {
+    padding: 10px;
+    font-size: 14px;
+    color: #164e63;
+    background: #ffffff;
+}
+
+.page__toolbar--left select:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-md);
+}
+
+.page__toolbar--left select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15);
+}
+
+/* ============================================
+   DASHBOARD CARDS
+   ============================================ */
+
+#content_dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+}
+
+/* Sensor Card Styling */
+#content_dashboard > div {
+    background: var(--gradient-card);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    border: 2px solid var(--border-color);
+    min-width: 320px;
+    position: relative;
+    overflow: hidden;
+}
+
+#content_dashboard > div::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+}
+
+#content_dashboard > div:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-light);
+}
+
+/* Sensor Title */
+#content_dashboard h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#content_dashboard h3::before {
+    content: "📡";
+    font-size: 24px;
+}
+
+/* Sensor Values */
+.page__content--title {
+    font-size: 22px !important;
+    font-weight: 600;
+    padding: 14px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Button Styling */
+.button__icon {
+    padding: 14px 28px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.button__icon--lamp--on {
+    background: linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%);
+    color: white;
+    box-shadow: 0 4px 16px 0 rgba(6, 182, 212, 0.45);
+}
+
+.button__icon--lamp--on:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px 0 rgba(6, 182, 212, 0.55);
+}
+
+.button__icon--lamp--off {
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+    color: white;
+    box-shadow: 0 4px 16px 0 rgba(100, 116, 139, 0.4);
+}
+
+.button__icon--lamp--off:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px 0 rgba(100, 116, 139, 0.5);
+}
+
+/* ============================================
+   CHART CONTAINERS
+   ============================================ */
+
+#content_temperature,
+#content_humidity {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+#content_temperature::before,
+#content_humidity::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+}
+
+#content_temperature .heading,
+#content_humidity .heading {
+    font-size: 20px !important;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+#chartContainer_temp,
+#chartContainer_hum {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.page__content {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* ============================================
+   SCROLLBAR - Cyan Theme
+   ============================================ */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-main);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media screen and (max-width: 1024px) {
+    .menu {
+        width: 85px;
+        padding: 20px 10px;
+    }
+    
+    .menu .item {
+        padding: 16px;
+        justify-content: center;
+        font-size: 0;
+        background-position: center !important;
+        padding-left: 16px !important;
+    }
+    
+    .header__left {
+        width: 85px;
+    }
+    
+    .header__left::before {
+        content: "🌐";
+        font-size: 28px;
+    }
+    
+    .content {
+        margin-left: 85px;
+    }
+}
