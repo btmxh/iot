@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="./css/inter.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/fa-all.min.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
     <title>IoT Hub - Smart Monitoring System</title>
     <style>
@@ -521,7 +521,7 @@
                 </select>
                 
                 <div class="user-profile">
-                    <img src="https://i.pravatar.cc/150?img=12" alt="Admin" class="avatar">
+                    <img src="./assets/img/default-avatar.jpg" alt="Admin" class="avatar">
                     <div style="font-size: 14px; font-weight: 600;" id="nameUser">Admin</div>
                     <button onclick="logoutFunction()" style="background:none; border:none; color:red; margin-left:10px; cursor:pointer;" title="Đăng xuất">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -582,6 +582,31 @@
                     </li>
                 </ul>
             </div>
+            <div class="info-panel">
+                <h3><i class="fa-solid fa-circle-info"></i> Thông tin thiết bị</h3>
+                <ul class="info-list">
+                    <li>
+                        <span class="label">Tên thiết bị</span>
+                        <span class="value" id="deviceName2">DHT22 Sensor</span>
+                    </li>
+                    <li>
+                        <span class="label">Phòng</span>
+                        <span class="value" id="roomName2">--</span>
+                    </li>
+                    <li>
+                        <span class="label">Trạng thái kết nối</span>
+                        <span class="value" style="color: #10b981;"><i class="fa-solid fa-circle" style="font-size: 8px;"></i> Đang hoạt động</span>
+                    </li>
+                    <li>
+                        <span class="label">Điều khiển</span>
+                        <div id="deviceControl"></div>
+                    </li>
+                    <li>
+                        <span class="label">Cập nhật lần cuối</span>
+                        <span class="value" id="lastUpdateInfo2">--</span>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <div class="chart-section" id="chartSection" style="display: none;">
@@ -603,11 +628,11 @@
 
     <script src="./js/pages/pub.js"></script>
     <script src="./js/pages/sub.js"></script>
-    <script src="./js/pages/iot.js"></script>
+    <!-- <script src="./js/pages/iot.js"></script> -->
 
     <script>
         var token = localStorage.getItem("token");
-        var baseUrl = "http://localhost:3000";
+        var baseUrl = "http://ep44.local:3000";
         var currentRoomId = null; 
 
         $("#nameUser").text(localStorage.getItem("nameUser") || "Admin");
@@ -631,6 +656,23 @@
                 }
             }
         });
+
+        function changeLampStatus(deviceId, status) {
+          $.ajax({
+              url: `${baseUrl}/api/data/toggle/${deviceId}`,
+              method: "POST",
+              contentType: "application/json",
+              headers: { 'Authorization': token },
+              dataType: "json",
+              data: JSON.stringify({ status }),
+              success: function (data) {
+                  getDeviceByRoom();
+              },
+              error: function (xhr, status, err) {
+                  console.error("Toggle failed:", err, xhr.responseText);
+              }
+          });
+        }
 
         function getDeviceByRoom() {
             currentRoomId = $("#roomListing :selected").val();
@@ -662,13 +704,20 @@
 
                     leds.forEach(led => {
                         let btnClass = led.status == "ON" ? "on" : "off";
-                        let btnText = led.deviceName + (led.status == "ON" ? " - Đang Bật" : " - Đang Tắt");
+                        let btnText = (led.status == "ON" ? "Bật" : "Tắt");
                         
-                        let btn = `<button id='${led._id}' class="btn-device ${btnClass}" onclick="changeLampStatus('${led._id}')">${btnText}</button>`;
-                        $("#lampControls").append(btn);
+                        let status = led.status === "ON";;
+                        var now = new Date().toLocaleTimeString();
+                        $("#deviceName2").text(led.deviceName);
+                        $("#lastUpdateInfo2").text(now);
+                        $("#roomName2").text($("#roomListing option:selected").text());
+
+                        let btn = `<button id='${led._id}' class="btn-device ${btnClass}" onclick="changeLampStatus('${led._id}', '${led.status === "ON" ? "OFF" : "ON"}')">${btnText}</button>`;
+                        $("#deviceControl").html(btn);
                     });
 
                     sensors.forEach(sensor => {
+console.debug(sensor);
                         if (sensor.deviceName === "DHT22 Sensor" || sensor.deviceName === "DHT22_Sensor") {
                             let temp = (sensor.value && sensor.value.temp) ? sensor.value.temp : "--";
                             let hum = (sensor.value && sensor.value.hum) ? sensor.value.hum : "--";
@@ -677,14 +726,13 @@
                             $("#currentHum").text(hum + "%");
                             $("#deviceStatus").text("Hoạt động");
                             $("#deviceName").text(sensor.deviceName);
+
+                            var now = new Date().toLocaleTimeString();
+                            $("#lastUpdated").text(now);
+                            $("#lastUpdateInfo").text(now);
+                            $("#roomName").text($("#roomListing option:selected").text());
                         }
                     });
-
-                    var now = new Date().toLocaleTimeString();
-                    $("#lastUpdated").text(now);
-                    $("#lastUpdateInfo").text(now);
-                    
-                    $("#roomName").text($("#roomListing option:selected").text());
                 }
             });
         }
@@ -737,6 +785,7 @@
                     var dataPoints = [];
                     
                     response.forEach(function(item) {
+console.debug(item);
                         var devName = item.name || (item.deviceId && item.deviceId.deviceName) || "unknown";
                         var itemRoomId = (item.deviceId && item.deviceId.roomId) ? item.deviceId.roomId : item.roomId;
                         const isCorrectRoom = (itemRoomId === roomId);

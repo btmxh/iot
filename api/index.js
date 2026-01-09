@@ -1,5 +1,5 @@
 require('dotenv').config();
-require('./subscriber');
+const mqtt = require('./subscriber');
 const cors = require('cors');
 const express = require('express');
 const connectDb = require('./config/db-config');
@@ -25,8 +25,9 @@ app.use('/api/auth', userRouter);
 app.use('/api/room', authenticationMiddleware, roomRouter);
 app.use('/api/device', authenticationMiddleware, deviceRouter);
 app.use('/api/devicetype', deviceTypeRouter);
-app.use('/api/data', authenticationMiddleware, deviceDataRouter);
+app.use('/api/data', authenticationMiddleware, deviceDataRouter(mqtt));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swagger));
+// app.use(express.static(path.join(__dirname, '../ui')));
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

@@ -20,6 +20,7 @@ function onConnect() {
   console.log("Connected to MQTT broker!");
   // Subscribe to the specified topic
   // receiver.subscribe(topicCommand);
+  console.debug(topicData);
   receiver.subscribe(topicData);
 }
 

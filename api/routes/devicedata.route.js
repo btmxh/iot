@@ -1,9 +1,14 @@
-const router = require('express').Router();
+const { getDeviceData, addData, getAllDeviceData, toggleDeviceStatus } = require('../controllers/devicedata.controller');
 
-const { getDeviceData, addData, getAllDeviceData } = require('../controllers/devicedata.controller');
+function create(mqtt) {
 
-router.get("/", getAllDeviceData);
-router.post("/", getDeviceData);
-router.post("/add", addData);
+  const router = require('express').Router();
+  router.get("/", getAllDeviceData);
+  router.post("/", getDeviceData);
+  router.post("/add", addData);
+  router.post("/toggle/:deviceId", toggleDeviceStatus(mqtt));
 
-module.exports = router;
+  return router;
+}
+
+module.exports = create;

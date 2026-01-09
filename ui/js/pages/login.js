@@ -1,4 +1,4 @@
-var baseUrl = "http://localhost:3000";
+var baseUrl = "http://ep44.local:3000";
 
 function loginFunction() {
     let email = $("#email").val();
