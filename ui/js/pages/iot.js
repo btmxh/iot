@@ -6,7 +6,7 @@ content_lamp = $("#content_lamp")
 $(document).ready(function() {
     // gán các sự kiện cho các element:
     // renderDashboard(content_dashboard);
-    // initEvents();
+    initEvents();
 
     // Load dữ liệu:
     loadData();
@@ -53,8 +53,8 @@ function loadData() {
 // });
 
 function initEvents() {
-    $(".item").click(function(){     
-        $('.item').removeClass("item--selected");
+    $(".menu-item").click(function(){     
+        $('.menu-item').removeClass("item--selected");
         $(this).addClass("item--selected");
         item_name = $(this).attr('name');
 
@@ -99,7 +99,7 @@ function renderDashboard(thispage){
 function renderTemperature(thispage) {
     localStorage.setItem("tab", "temperature");
     const token = localStorage.getItem("token");
-    const baseUrl = "http://localhost:3000";
+    const baseUrl = "http://ep44.local:3000";
     const roomId = $("#roomListing :selected").val();    
 
     const deviceId = localStorage.getItem(`${roomId}_temperature_sensors`);
@@ -135,7 +135,7 @@ function renderTemperature(thispage) {
 function renderHumidity(thispage){
     localStorage.setItem("tab", "humidity");
     const token = localStorage.getItem("token");
-    const baseUrl = "http://localhost:3000";
+    const baseUrl = "http://ep44.local:3000";
     const roomId = $("#roomListing :selected").val();    
     const deviceId = localStorage.getItem(`${roomId}_humidity_sensors`);
 
